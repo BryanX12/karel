@@ -1,55 +1,50 @@
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import kareltherobot.*;
+import java.util.concurrent.Semaphore;
 
 public class Extraccion {
-    private boolean trenesListos = false;
-    private boolean extractoresListos = false;
-    private final Lock lock = new ReentrantLock();
-    private final Condition trenesCondicion = lock.newCondition();
-    private final Condition extractoresCondicion = lock.newCondition();
+    public volatile int beepers;
 
-    public void notifyExtractores() {
-        lock.lock();
+    public Semaphore beepMutex = new Semaphore(1);
+
+    public Extraccion() {
+        this.beepers = 0;
+    }
+
+    public int getBeepers() {
         try {
-            extractoresListos = true;
-            extractoresCondicion.signalAll();
+            beepMutex.acquire();
+            return beepers;
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            return -1;
         } finally {
-            lock.unlock();
+            beepMutex.release();
         }
     }
 
-    public void notifyTrenes() {
-        lock.lock();
+    public void putBeeper(MejorRobot robot) {
         try {
-            trenesListos = true;
-            trenesCondicion.signalAll();
+            beepMutex.acquire();
+            beepers++;
+            robot.beepers--;
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         } finally {
-            lock.unlock();
+            beepMutex.release();
         }
+        robot.putBeeper();
     }
 
-    public void esperarExtractores() throws InterruptedException {
-        lock.lock();
+    public void pickBeeper(MejorRobot robot) {
         try {
-            while (!extractoresListos) {
-                extractoresCondicion.await();
-            }
-            extractoresListos = false; // Reiniciar el estado
+            beepMutex.acquire();
+            beepers--;
+            robot.beepers++;
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         } finally {
-            lock.unlock();
+            beepMutex.release();
         }
-    }
-
-    public void esperarTrenes() throws InterruptedException {
-        lock.lock();
-        try {
-            while (!trenesListos) {
-                trenesCondicion.await();
-            }
-            trenesListos = false; // Reiniciar el estado
-        } finally {
-            lock.unlock();
-        }
+        robot.pickBeeper();
     }
 }

@@ -4,6 +4,10 @@ import java.awt.Robot;
 import java.awt.color.*;
 
 public class MinaMain implements Directions {
+    public static Extraccion extraccion = new Extraccion();
+    public static Extraccion salida = new Extraccion();
+    
+
     public static void main(String[] args) {
         // Obtener los argumentos de línea de comandos para la cantidad de robots
         int cantidadMineros = 2; // Valor por defecto
@@ -23,20 +27,22 @@ public class MinaMain implements Directions {
                 cantidadExtractores = Integer.parseInt(args[i + 1]);
             }
         }
-
+        World.showSpeedControl(true);
         // Crear los mineros
         for (int i = 0; i < cantidadMineros; i++) {
-            Minero minero = new Minero(7, 1, East, 0, 50, Color.black);
+            new Minero(8, i+2, Color.BLACK);
         }
 
         // Crear los trenes
         for (int i = 0; i < cantidadTrenes; i++) {
-            Tren tren = new Tren(11, 13, East, Color.blue);
+            new Tren(9, i+3, Color.BLUE);
         }
 
         // Crear los extractores
         for (int i = 0; i < cantidadExtractores; i++) {
-            Extractor extractor = new Extractor(1, 2, East, 0, Color.red);
+            new Extractor(17, i+13, Color.RED);
         }
+
+        
     }
 }

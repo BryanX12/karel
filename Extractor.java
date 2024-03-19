@@ -1,52 +1,15 @@
 import kareltherobot.*;
 import java.awt.Color;
 
-public class Extractor extends Robot implements Runnable {
-    private static final int CAPACIDAD_MAXIMA = 50;
-    private int currentStreet;
-    private int currentAvenue;
-    private int beepersInBag;
+public class Extractor extends MejorRobot {
 
-    public Extractor(int street, int avenue, Direction direction, int beepers, Color badge) {
-        super(street, avenue, direction, beepers, badge);
-        this.currentStreet = street;
-        this.currentAvenue = avenue;
-        this.beepersInBag = 0; // Inicialmente no hay beepers en la bolsa
-        Thread thread = new Thread(this);
-        thread.start();
-    }
-
-    public int beepersInBag() {
-        return this.beepersInBag;
+    public Extractor(int street, int avenue, Color badge) {
+        super(street, avenue, badge, 5);
     }
 
     private void extraerBeepers() {
-        moveToExtraccion();
-
-        while (beepersInBag() < CAPACIDAD_MAXIMA && nextToABeeper()) {
+        while (beepers < max && nextToABeeper()) {
             pickBeeper();
-        }
-
-        informarRecogidaBeepers();
-
-        esperarNotificacionTrenes();
-    }
-
-    private void moveToExtraccion() {
-        while (currentStreet != 1) {
-            if (!facingNorth()) {
-                turnLeft();
-            }
-            move();
-            currentStreet--;
-        }
-
-        while (currentAvenue != 2) {
-            if (!facingWest()) {
-                turnLeft();
-            }
-            move();
-            currentAvenue--;
         }
     }
 
@@ -68,6 +31,7 @@ public class Extractor extends Robot implements Runnable {
 
     @Override
     public void run() {
-        extraerBeepers();
+        moveToEntrance();
+        // extraerBeepers();
     }
 }
