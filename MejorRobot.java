@@ -104,6 +104,27 @@ public class MejorRobot extends Robot {
         moveTo(1);
     }
 
+    public void exitMina() {
+        // Sale el minero
+        turn(West);
+        moveTo(13);
+        turn(South);
+        moveTo(6);
+        turn(West);
+        moveTo(3);
+        turn(South);    
+        moveTo(1);
+        turn(West);
+        moveTo(1);
+        turn(North);
+        moveTo(7);
+        turn(East);
+        moveTo(2);
+        turn(North);
+        moveTo(10);
+    }
+
+
     public void moveToMine() {
         // Sigue el recorrido desde extraccion hacia (13, 11)
         turn(East);
@@ -128,6 +149,22 @@ public class MejorRobot extends Robot {
         moveTo(10);
         turn(East);
         moveTo(14);
+    }
+
+    public void moveToBodegas() {
+        turn(West);
+        moveTo(1);
+        turn(North);
+        moveTo(7);
+        turn(East);
+        move();
+        turn(North);
+        move();
+        turn(East);
+        move();
+        turn(South);
+        move();
+        turn(East);
     }
     
 }

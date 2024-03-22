@@ -6,7 +6,13 @@ import java.awt.color.*;
 public class MinaMain implements Directions {
     public static Extraccion extraccion = new Extraccion();
     public static Extraccion salida = new Extraccion();
-    
+    public static Extraccion bodega = new Extraccion();
+    public static Extraccion bodega2 = new Extraccion();
+    public static Extraccion bodega3 = new Extraccion();
+    public static Extraccion bodega4 = new Extraccion();
+    public static Extraccion bodega5 = new Extraccion();
+    public static Minero minero;
+
 
     public static void main(String[] args) {
         // Obtener los argumentos de línea de comandos para la cantidad de robots
@@ -40,9 +46,8 @@ public class MinaMain implements Directions {
 
         // Crear los extractores
         for (int i = 0; i < cantidadExtractores; i++) {
-            new Extractor(17, i+13, Color.RED);
-        }
+            new Extractor(10, i+4, Color.RED);
 
-        
+        }
     }
 }
